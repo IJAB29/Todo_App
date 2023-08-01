@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\TodoRequest;
 use Illuminate\Http\Request;
+use App\Models\Todo;
 
 class TodoController extends Controller
 {
@@ -20,6 +21,12 @@ class TodoController extends Controller
     }
 
     public function store(TodoRequest $request){
-        Todo::create();
+        Todo::create([
+            "title" => $request->title,
+            "description" => $request->description
+        ]);
+
+        $request->session()->flash("alert-success", "Task added successfully");
+        return to_route("todos.index");
     }
 }
