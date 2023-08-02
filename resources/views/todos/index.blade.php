@@ -23,6 +23,7 @@
                             <th scope="col">Title</th>
                             <th scope="col">Description</th>
                             <th scope="col">Status</th>
+                            <th scope="col">Functions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,7 +32,14 @@
                                 <th scope="row">1</th>
                                 <td>{{ $todo->title }}</td>
                                 <td>{{ $todo->description }}</td>
-                                <td>{{ $todo->status }}</td>
+                                <td>{{ $todo->status }}</td>        
+                                <td>
+                                <a class="btn btn-sm btn-info" href="{{ route('todos.show', $todo->id) }}">View</a>
+                                <form action="">
+                                    <input type="hidden" name="todo_id" value="{{ $todo->id }}">
+                                    <input type="submit" class="btn btn-sm btn-danger" value="Delete">
+                                </form>
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>

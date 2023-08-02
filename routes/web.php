@@ -23,5 +23,6 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get("/todos/index", [TodoController::class, "index"])->name("todos.index");
 Route::get("/todos/create", [TodoController::class, "create"])->name("todos.create");
-Route::get("/todos/edit", [TodoController::class, "edit"])->name("todos.edit");
 Route::post("/todos/store", [TodoController::class, "store"])->name("todos.store");
+Route::get("/todos/show/{id}", [TodoController::class, "show"])->name("todos.show");
+Route::post("/todos/update/{id}", [TodoController::class, "update"])->name("todos.update");
