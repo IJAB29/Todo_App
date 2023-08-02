@@ -20,4 +20,10 @@
         </div>
     </div>
 </div>
+
+<script>
+    setTimeout(function() {
+        window.location.href = '{{ route('todos.index') }}'; 
+    }, 1000);
+</script>
 @endsection

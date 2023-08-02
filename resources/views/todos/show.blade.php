@@ -26,7 +26,8 @@
                             <option value="done" {{ $todo->status === 'done' ? 'selected' : '' }}>Done</option>
                             <option value="cancelled" {{ $todo->status === 'cancelled' ? 'selected' : '' }}>Cancelled</option>
                         </select>
-                    </div>                    
+                    </div>               
+                    <a href="{{ url()->previous() }}" class="btn btn-info">Back</a>     
                     <button type="submit" class="btn btn-primary">Update</button>
 
                 </form>
