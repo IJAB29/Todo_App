@@ -5,48 +5,53 @@ namespace App\Http\Controllers;
 use App\Http\Requests\TodoRequest;
 use Illuminate\Http\Request;
 use App\Models\Todo;
+use Illuminate\Support\Facades\Auth; //new
 
 class TodoController extends Controller
 {
-    public function index(){
-        $todos = Todo::all();
-        return view("todos.index",[
-            "todos"=>$todos
-        ]);
+    public function index()
+    {
+        $user = Auth::user();
+        $todos = $user->todos; // Using the relationship to fetch all Todos associated with the authenticated user.
+        return view("todos.index", compact("todos"));
     }
 
-    public function create(){
+    public function create()
+    {
         return view("todos.create");
     }
 
-    public function store(TodoRequest $request){
-        Todo::create([
+    public function store(TodoRequest $request)
+    {
+        $user = Auth::user();
+        $user->todos()->create([
             "title" => $request->title,
-            "description" => $request->description
+            "description" => $request->description,
         ]);
 
-        $request->session()->flash("alert-success", "Task added successfully");
-        return to_route("todos.index");
+        $request->session()->flash("alert-success", "Todo added successfully");
+        return redirect()->route("todos.index"); // Correcting to_route to redirect()->route.
     }
 
-    public function show($id){
-        $todo = Todo::find($id);
-        if(! $todo){
-            return to_route("todos.index")->withErrors([
-                "error" => "unable to locate the Todo"
+    public function show($id)
+    {
+        $user = Auth::user();
+        $todo = $user->todos()->find($id); // Using the relationship to find the Todo associated with the authenticated user.
+        if (!$todo) {
+            return redirect()->route("todos.index")->withErrors([
+                "error" => "Unable to locate the Todo"
             ]);
         }
-        return view("todos.show", [
-            "todo"=>$todo
-        ]);
+        return view("todos.show", compact("todo"));
     }
 
     public function update(TodoRequest $request, $id)
     {
-        $todo = Todo::find($id);
-        if (! $todo){
+        $user = Auth::user();
+        $todo = $user->todos()->find($id); // Using the relationship to find the Todo associated with the authenticated user.
+        if (!$todo) {
             $request->session()->flash("error", "Unable to locate Todo");
-            return to_route("todos.index")->withErrors([
+            return redirect()->route("todos.index")->withErrors([
                 "error" => "Unable to locate the Todo"
             ]);
         }
@@ -55,22 +60,24 @@ class TodoController extends Controller
         $todo->status = $request->input('status');
         $todo->save();
 
-        $request->session()->flash("alert-success", "Task updated successfully");
-        return to_route("todos.index");
+        $request->session()->flash("alert-success", "Todo updated successfully");
+        return redirect()->route("todos.index"); // Correcting to_route to redirect()->route.
     }
 
-    public function delete(Request $request, $id){
-        $todo = Todo::find($id);
-        if (! $todo){
+    public function delete(Request $request, $id)
+    {
+        $user = Auth::user();
+        $todo = $user->todos()->find($id); // Using the relationship to find the Todo associated with the authenticated user.
+        if (!$todo) {
             $request->session()->flash("error", "Unable to locate Todo");
-            return to_route("todos.index")->withErrors([
+            return redirect()->route("todos.index")->withErrors([
                 "error" => "Unable to locate the Todo"
             ]);
         }
 
-        $todo->delete();        
+        $todo->delete();
 
-        $request->session()->flash("alert-success", "Task deleted successfully");
-        return to_route("todos.index");
+        $request->session()->flash("alert-success", "Todo deleted successfully");
+        return redirect()->route("todos.index"); // Correcting to_route to redirect()->route.
     }
 }

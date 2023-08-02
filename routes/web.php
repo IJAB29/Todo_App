@@ -21,9 +21,12 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get("/todos/index", [TodoController::class, "index"])->name("todos.index");
-Route::get("/todos/create", [TodoController::class, "create"])->name("todos.create");
-Route::post("/todos/store", [TodoController::class, "store"])->name("todos.store");
-Route::get("/todos/show/{id}", [TodoController::class, "show"])->name("todos.show");
-Route::post("/todos/update/{id}", [TodoController::class, "update"])->name("todos.update");
-Route::post("/todos/delete/{id}", [TodoController::class, "delete"])->name("todos.delete");
+
+Route::prefix("todos")->as("todos.")->controller(TodoController::class)->group(function(){    
+    Route::get("index", "index")->name("index");
+    Route::get("create", "create")->name("create");
+    Route::post("store", "store")->name("store");
+    Route::get("show/{id}", "show")->name("show");
+    Route::put("update/{id}", "update")->name("update");
+    Route::delete("delete/{id}", "delete")->name("delete");
+});

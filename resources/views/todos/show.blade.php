@@ -9,6 +9,7 @@
 
                 <form method="POST" action="{{ route('todos.update', $todo->id) }}">
                 @csrf                
+                @method("PUT")
 
                     <div class="card-body">
                     <div class="mb-3">

@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Tasks') }}</div>
 
                 <div class="card-body">
-                <a class="btn btn-primary" href="{{ route('todos.create') }}">Add Task</a>
+                <a class="btn btn-primary" href="{{ route('todos.create') }}">Add Todo</a>
 
                 @if (Session::has("alert-success"))
                 <div class="alert alert-success" role="alert">
@@ -37,6 +37,7 @@
                                 <td>
                                 <form method="POST" action="{{ route('todos.delete', $todo->id) }}">
                                     @csrf
+                                    @method("DELETE")
                                     <a class="btn btn-sm btn-info" href="{{ route('todos.show', $todo->id) }}">View</a>
                                     <!-- <input type="hidden" name="todo_id" value="{{ $todo->id }}"> -->
                                     <input type="submit" class="btn btn-sm btn-danger" value="Delete">
@@ -47,7 +48,7 @@
                     </tbody>
                     </table>
                 @else
-                    <h5>No tasks added yet</h5>
+                    <h5>No Todos added yet</h5>
                 @endif
 
                 </div>
